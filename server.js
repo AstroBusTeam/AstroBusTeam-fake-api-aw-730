@@ -1,18 +1,19 @@
+const express = require('express');
 const jsonServer = require('json-server');
 
 const db = require('./db.json');
 const routes = require('./routes.json');
 
-const server = jsonServer.create();
-const router = jsonServer.router(db);
+const app = express();
+app.set('json spaces', 2);
 
-server.use(jsonServer.defaults());
-server.use(jsonServer.rewriter(routes));
-server.use(router);
+app.use(jsonServer.defaults());
+app.use(jsonServer.rewriter(routes));
+app.use(jsonServer.router(db));
 
 const port = process.env.PORT || 3000;
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`JSON Server is running on http://localhost:${port}`);
 });
 
-module.exports = server;
+module.exports = app;
